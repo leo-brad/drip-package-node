@@ -1,0 +1,39 @@
+.title
+  width: 100%
+  display: flex
+  padding: 8px 15px 8px 15px
+  border-bottom: 1.9px solid rgb(235, 235, 235)
+  border-top: 1.9px solid rgb(235, 235, 235)
+.title::before
+  font-size: 14px
+  content: '\f272'
+  display: inline-flex
+  color: #fff
+  min-width: 29px
+  height: 29px
+  margin-right: 15px
+  border-radius: 30px
+  align-items: center
+  justify-content: center
+  background-color: rgb(60, 180, 60)
+  box-shadow: inset 0px 0px 1.5px 1.3px rgb(45, 155, 45)
+.titleContent
+  display: flex
+  font-weight: 340
+  align-items: center
+.bold
+  font-size: 15.5px
+  color: rgb(80, 80, 80)
+  display: block
+  margin-bottom: 3px
+.content
+  width: 100%
+  color: rgb(115, 115, 105)
+  font-size: 15.5px
+  font-weight: 340
+  padding: 15px 30px 15px 30px
+  background-color: rgb(245, 245, 265)
+.contentFirst
+  position: relative
+  top: 1px
+  border-bottom: 1px solid rgb(235, 235, 235)
