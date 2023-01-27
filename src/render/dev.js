@@ -5,8 +5,8 @@ import Node from '~/render/script/component/Node';
 import Emitter from '~/render/script/class/Emitter';
 
 const data = [
-  { field: 'stdout', string: 'Applications', },
-  { field: 'stdout', string: 'Applications', },
+  { field: 'stderr', string: 'Applications', },
+  { field: 'stderr', string: 'Applications', },
   { field: 'stdout', string: 'Applications', },
   { field: 'stdout', string: 'Applications', },
   { field: 'stdout', string: 'Applications', },

@@ -49,7 +49,7 @@ class RegionListOffline extends OfflinePackage {
     if (ul.scrollTop > scrollTop) {
       await this.updateView('d');
       if (this.status.first >= 0) {
-        this.syncRemove('d');
+        await this.syncRemove('d');
       }
     } else if (ul.scrollTop < scrollTop) {
       const {
@@ -59,7 +59,7 @@ class RegionListOffline extends OfflinePackage {
       } = this;
       await this.updateView('u');
       if (last < this.data.length) {
-        this.syncRemove('u');
+        await this.syncRemove('u');
       }
     }
     this.status.scrollTop = ul.scrollTop;
@@ -221,7 +221,7 @@ class RegionListOffline extends OfflinePackage {
         if (k >= 0) {
           const bottom = await this.getDomDownBottom(this.getKey(k));
           if (this.status.scrollTop >= bottom) {
-            const dom = this.getDom(this.getKey(k));
+            const dom = await this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
             this.status.first = k + 1;
