@@ -6,12 +6,12 @@ class SegmentFail extends React.Component {
   render() {
     const { serial, } = this.props;
     return ([
-      <div className={style.title}>
+      <div key={0} className={style.title}>
         <div className={style.titleContent}>
           <b className={style.bold}>StdErr:{serial}</b>
         </div>
       </div>,
-      <div className={style.content}>
+      <div key={1} className={style.content}>
         <Format content={this.props.content} />
       </div>,
     ]);

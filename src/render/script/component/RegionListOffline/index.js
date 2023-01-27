@@ -1,7 +1,6 @@
 import React from 'react';
 import OfflinePackage from '~/render/script/component/OfflinePackage';
 import renderToNode from '~/render/script/lib/renderToNode';
-import check from '~/render/script/lib/check';
 
 class RegionListOffline extends OfflinePackage {
   constructor(props) {
@@ -58,9 +57,9 @@ class RegionListOffline extends OfflinePackage {
         }
       } = this;
       await this.updateView('u');
-      if (last < this.data.length) {
-        await this.syncRemove('u');
-      }
+      //if (last < this.data.length) {
+        //await this.syncRemove('u');
+      //}
     }
     this.status.scrollTop = ul.scrollTop;
   }
@@ -86,20 +85,10 @@ class RegionListOffline extends OfflinePackage {
     }
   }
 
-  checkDom(key) {
-    let ans = false;
-    if (document.getElementById(key) !== null) {
-      this.dom = document.getElementById(key);
-      ans = true;
-    }
-    return ans;
-  }
-
-  async getDom(key) {
+  getDom(key) {
     const { id, doms, } = this;
     if (doms[key] === undefined) {
-      await check(() => this.checkDom(key));
-      doms[key] = this.dom;
+      doms[key] = document.getElementById(key);
     }
     return doms[key];
   }
@@ -112,10 +101,10 @@ class RegionListOffline extends OfflinePackage {
     return heights[key];
   }
 
-  initLast() {
+  async initLast() {
     const { top, bottom, } = this.status;
     if (bottom - top > 0) {
-      this.syncInsert(0, 'd');
+      await this.syncInsert(0, 'd');
       this.status.last = 0;
     }
   }
@@ -125,53 +114,53 @@ class RegionListOffline extends OfflinePackage {
     return id + k;
   }
 
-  async getDomUpTop(key) {
-    const dom = await this.getDom(key);
+  getDomUpTop(key) {
+    const dom = this.getDom(key);
     const top = dom.offsetTop;
     return top;
   }
 
-  async getDomUpBottom(key) {
-    const top = await this.getDomUpTop(key);
-    const dom = await this.getDom(key);
+  getDomUpBottom(key) {
+    const top = this.getDomUpTop(key);
+    const dom = this.getDom(key);
     const height = this.getHeight(dom, key);
     return top + height;
   }
 
-  async getDomDownBottom(key) {
-    const top = await this.getDomDownTop(key);
-    const dom = await this.getDom(key);
+  getDomDownBottom(key) {
+    const top = this.getDomDownTop(key);
+    const dom = this.getDom(key);
     const height = this.getHeight(dom, key);
     return top + height;
   }
 
-  async getDomDownTop(key) {
-    const dom = await this.getDom(key);
+  getDomDownTop(key) {
+    const dom = this.getDom(key);
     if (dom) {
       const offsetTop = dom.offsetTop;
       const { id, } = this;
-      const ul = await this.getDom(id);
+      const ul = this.getDom(id);
       const scrollTop = ul.scrollTop;
       return offsetTop - scrollTop;
     }
   }
 
   async downView() {
-    const { status, } = this;
-    const { last, } = status;
+    const { last, } = this.status;
     if (last < this.data.length) {
-      const top = await this.getDomDownTop(this.getKey(last));
+      const top = this.getDomDownTop(this.getKey(last));
+      const { status, } = this;
       if (top <= status.bottom) {
         if (last + 1 < this.data.length) {
-          this.addDownItem(last + 1);
-          this.downView();
+          await this.addDownItem(last + 1);
+          await this.downView();
         }
       }
     }
   }
 
-  addDownItem(k) {
-    this.syncInsert(k, 'd');
+  async addDownItem(k) {
+    await this.syncInsert(k, 'd');
     if (k < this.data.length) {
       this.status.last = k;
     }
@@ -181,18 +170,19 @@ class RegionListOffline extends OfflinePackage {
     const { status, } = this;
     const { first, } = status;
     if (first >= 0) {
-      const bottom = await this.getDomUpBottom(this.getKey(first));
+      const bottom = this.getDomUpBottom(this.getKey(first));
+      console.log('bottom', bottom);
       if (bottom >= status.top) {
         if (first - 1 >= 0) {
-          this.addUpItem(first - 1);
+          await this.addUpItem(first - 1);
           this.upView();
         }
       }
     }
   }
 
-  addUpItem(k) {
-    this.syncInsert(k, 'u');
+  async addUpItem(k) {
+    await this.syncInsert(k, 'u');
     if (k >= 0) {
       this.status.first = k;
     }
@@ -204,10 +194,10 @@ class RegionListOffline extends OfflinePackage {
         const { status, } = this;
         const k = status.last;
         if (k < this.data.length) {
-          const top = await this.getDomUpTop(this.getKey(k));
+          const top = this.getDomUpTop(this.getKey(k));
           const { id, ul, } = this;
           if (top >= this.status.scrollTop + this.getHeight(ul, id)) {
-            const dom = await this.getDom(this.getKey(k));
+            const dom = this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
             this.status.last = k - 1;
@@ -219,9 +209,9 @@ class RegionListOffline extends OfflinePackage {
         const { status, } = this;
         const k = status.first;
         if (k >= 0) {
-          const bottom = await this.getDomDownBottom(this.getKey(k));
-          if (this.status.scrollTop >= bottom) {
-            const dom = await this.getDom(this.getKey(k));
+          const bottom = this.getDomDownBottom(this.getKey(k));
+          if (bottom < -4) {
+            const dom = this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
             this.status.first = k + 1;

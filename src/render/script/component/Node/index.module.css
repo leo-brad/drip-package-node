@@ -1,6 +1,8 @@
 .nodes
+  width: 100%
   list-style-type: none
   height: 200px
   margin: 0
   padding: 0
   overflow-y: scroll
+  overflow-x: hidden

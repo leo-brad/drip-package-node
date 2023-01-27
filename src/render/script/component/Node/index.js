@@ -4,6 +4,7 @@ import style from './index.module.css';
 import renderToNode from '~/render/script/lib/renderToNode';
 import RegionListOffline from '~/render/script/component/RegionListOffline';
 import Segment from '~/render/script/component/Segment';
+import check from '~/render/script/lib/check';
 
 class Node extends RegionListOffline {
   constructor(props) {
@@ -17,6 +18,7 @@ class Node extends RegionListOffline {
     this.roots = {};
     this.dealEvent = this.dealEvent.bind(this);
     this.updateUi = this.updateUi.bind(this);
+    this.checkDom = this.checkDom.bind(this);
   }
 
   async ownDidMount() {
@@ -28,7 +30,7 @@ class Node extends RegionListOffline {
     await this.init();
   }
 
-  syncInsert(i, t) {
+  async syncInsert(i, t) {
     const e = this.data[i];
     if (e) {
       const { id, ul, } = this;
@@ -36,15 +38,18 @@ class Node extends RegionListOffline {
       const { field, string, } = e;
       const component = <Segment id={k} key={i} situation={field} string={string} serial={i+1} />;
       const li = renderToNode(<li id={k} key={i} />);
-      switch (t) {
-        case 'd':
-          ul.append(li);
-          break;
-        case 'u':
-          ul.prepend(li);
-          break;
+      if (document.getElementById(k) === null) {
+        switch (t) {
+          case 'd':
+            ul.append(li);
+            break;
+          case 'u':
+            ul.prepend(li);
+            break;
+        }
+        this.renderElement(li, component, id);
+        await check(() => this.checkDom(k));
       }
-      this.renderElement(li, component, id);
     }
   }
 
@@ -66,12 +71,10 @@ class Node extends RegionListOffline {
     }
   }
 
-  updateUi() {
-    setTimeout(async () => {
-      const { data, } = this.props;
-      this.setData(data);
-      await this.init();
-    }, 0);
+  async updateUi() {
+    const { data, } = this.props;
+    this.setData(data);
+    await this.init();
   }
 
   setData(data) {
@@ -85,7 +88,7 @@ class Node extends RegionListOffline {
   }
 
   async init() {
-    this.initLast();
+    await this.initLast();
     await this.updateView('d');
     const { first, } = this;
     if (first) {
@@ -126,6 +129,17 @@ class Node extends RegionListOffline {
       }
       root.render(component);
     }
+  }
+
+  checkDom(key) {
+    let ans = false;
+    if (document.getElementById(key) !== null) {
+      const dom = document.getElementById(key);
+      if (dom) {
+        ans = true;
+      }
+    }
+    return ans;
   }
 
   render() {

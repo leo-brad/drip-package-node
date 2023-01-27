@@ -9,19 +9,19 @@ class SegmentSuccess extends React.Component {
     switch (serial) {
       case 1:
         content =
-          <div className={[style.content, style.contentFirst].join(' ')}>
+          <div key={1} className={[style.content, style.contentFirst].join(' ')}>
             <Format content={this.props.content} />
           </div>
         break;
       default:
         content =
-          <div className={style.content}>
+          <div key={1} className={style.content}>
             <Format content={this.props.content} />
           </div>
         break;
     }
     return ([
-      <div className={style.title}>
+      <div key={0} className={style.title}>
         <div className={style.titleContent}>
           <b className={style.bold}>Stdout:{serial}</b>
         </div>
