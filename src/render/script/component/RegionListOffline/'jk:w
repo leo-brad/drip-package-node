@@ -57,9 +57,9 @@ class RegionListOffline extends OfflinePackage {
         }
       } = this;
       await this.updateView('u');
-      if (last < this.data.length) {
-        await this.syncRemove('u');
-      }
+      //if (last < this.data.length) {
+        //await this.syncRemove('u');
+      //}
     }
     this.status.scrollTop = ul.scrollTop;
   }
@@ -93,7 +93,7 @@ class RegionListOffline extends OfflinePackage {
     return doms[key];
   }
 
-  getHeight(key, dom) {
+  getHeight(dom, key) {
     const { heights, } = this;
     if (heights[key] === undefined) {
       heights[key] = dom.clientHeight;
@@ -116,24 +116,21 @@ class RegionListOffline extends OfflinePackage {
 
   getDomUpTop(key) {
     const dom = this.getDom(key);
-    let top = undefined;
-    if (dom) {
-      return dom.offsetTop;
-    }
+    const top = dom.offsetTop;
+    return top;
   }
 
   getDomUpBottom(key) {
     const top = this.getDomUpTop(key);
     const dom = this.getDom(key);
-    const { ul, } = this;
-    const height = this.getHeight(key, ul);
+    const height = this.getHeight(dom, key);
     return top + height - this.status.scrollTop;
   }
 
   getDomDownBottom(key) {
     const top = this.getDomDownTop(key);
     const dom = this.getDom(key);
-    const height = this.getHeight(key, dom);
+    const height = this.getHeight(dom, key);
     return top + height;
   }
 
@@ -172,12 +169,11 @@ class RegionListOffline extends OfflinePackage {
   async upView() {
     const { status, } = this;
     const { first, } = status;
-    let count = 0;
     if (first >= 0) {
       const bottom = this.getDomUpBottom(this.getKey(first));
-      if (bottom >= status.top) {
+      console.log('bottom', bottom);
+      if (bottom > status.top) {
         if (first - 1 >= 0) {
-          count += 1;
           await this.addUpItem(first - 1);
           this.upView();
         }
@@ -200,7 +196,7 @@ class RegionListOffline extends OfflinePackage {
         if (k < this.data.length) {
           const top = this.getDomUpTop(this.getKey(k));
           const { id, ul, } = this;
-          if (top - this.status.scrollTop >= this.getHeight(id, ul)) {
+          if (top - this.status.scrollTop >= this.getHeight(ul, id) + 5) {
             const dom = this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
