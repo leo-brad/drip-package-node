@@ -25,6 +25,17 @@ class Node extends RegionListOffline {
     const { id, } = this;
     const ul = document.getElementById(id);
     this.ul = ul;
+
+    const scrollTop = ul.scrollTop;
+    const height = ul.clientHeight;
+    const status = {
+      first: 0,
+      top: scrollTop,
+      bottom: scrollTop + height,
+      scrollTop: ul.scrollTop,
+    };
+    this.status = status;
+
     const { data, } = this.props
     this.setData(data);
     await this.init();

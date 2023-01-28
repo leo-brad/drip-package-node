@@ -2,7 +2,7 @@
   display: inline-flex
   color: rgb(105, 105, 105)
   margin-left: 10px
-  padding: 10px 10px 10px 10px
+  padding: 5px 8px 5px 8px
   border-width: 0px 1px 1px 1px
   border-style: solid
   border-color: rgb(200, 200, 200)
@@ -13,10 +13,10 @@
   content: '\f272'
   display: inline-flex
   color: #fff
-  min-width: 29px
-  height: 29px
-  margin-right: 15px
-  border-radius: 30px
+  width: 28px
+  height: 28px
+  margin-right: 11px
+  border-radius: 28px
   align-items: center
   justify-content: center
   background-color: rgb(60, 180, 60)
@@ -26,10 +26,10 @@
   font-weight: 340
   align-items: center
 .bold
-  font-size: 15.5px
+  font-size: 14.5px
   color: rgb(80, 80, 80)
   display: block
-  margin-bottom: 3px
+  margin-top: 3px
 .content
   width: 100%
   margin-top: 0.6px

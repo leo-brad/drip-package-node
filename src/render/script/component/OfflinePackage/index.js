@@ -14,6 +14,7 @@ class OfflinePackage extends React.Component {
   }
 
   dealMountAndUnmount(data) {
+    console.log(data);
     const [event] = data;
     switch (event) {
       case 'mount':
@@ -25,7 +26,7 @@ class OfflinePackage extends React.Component {
     }
   }
 
- mount() {
+ async mount() {
     const {
       share: {
         emitter,
@@ -33,14 +34,14 @@ class OfflinePackage extends React.Component {
     } = this.props;
     const { ownDidMount, } = this;
     if (typeof ownDidMount === 'function') {
-      this.ownDidMount();
+      await this.ownDidMount();
     }
     this.bind();
     emitter.on('window/focus', this.bind);
     emitter.on('window/blur', this.remove);
   }
 
-  unmount() {
+  async unmount() {
     const {
       share: {
         emitter,
@@ -48,7 +49,7 @@ class OfflinePackage extends React.Component {
     } = this.props;
     const { ownWillUnmount, } = this;
     if (typeof ownWillUnmount === 'function') {
-      this.ownWillUnmount();
+      await this.ownWillUnmount();
     }
     this.remove();
     emitter.remove('window/focus', this.bind);

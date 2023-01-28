@@ -15,23 +15,6 @@ class RegionListOffline extends OfflinePackage {
     this.dealScroll = this.dealScroll.bind(this);
   }
 
-  componentDidMount() {
-    const { id, } = this;
-
-    const ul = document.getElementById(id);
-    this.ul = ul;
-
-    const scrollTop = ul.scrollTop;
-    const height = ul.clientHeight;
-    const status = {
-      first: 0,
-      top: scrollTop,
-      bottom: scrollTop + height,
-      scrollTop: ul.scrollTop,
-    };
-    this.status = status;
-  }
-
   async dealScroll(e) {
     await new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -61,6 +44,7 @@ class RegionListOffline extends OfflinePackage {
         await this.syncRemove('u');
       }
     }
+    this.status.scrollDiff = this.status.scrollTop - ul.scrollTop;
     this.status.scrollTop = ul.scrollTop;
   }
 
@@ -71,7 +55,9 @@ class RegionListOffline extends OfflinePackage {
 
   removeEvent() {
     const { ul, } = this;
-    ul.removeEventListener('scroll', this.dealScroll);
+    if (ul) {
+      ul.removeEventListener('scroll', this.dealScroll);
+    }
   }
 
   async updateView(t) {
