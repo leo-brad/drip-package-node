@@ -10,7 +10,6 @@ class RegionListOffline extends OfflinePackage {
     const id = new Date().getTime().toString();
     this.id = id;
 
-    this.type = 1;
     this.doms = [];
     this.heights = [];
     this.dealScroll = this.dealScroll.bind(this);
@@ -50,7 +49,9 @@ class RegionListOffline extends OfflinePackage {
     let diffScroll = this.status.scrollTop - ul.scrollTop;
     while (true) {
       if (Math.abs(diffScroll) <= 45) {
-        ul.scrollIntoView(this.status.scrollTop + diffScroll);
+        if (Math.abs(diffScroll) > 0) {
+          ul.scrollIntoView(this.status.scrollTop + diffScroll);
+        }
         break;
       } else {
         diffScroll = diffScroll / 2;
@@ -113,10 +114,10 @@ class RegionListOffline extends OfflinePackage {
 
   getDomUpTop(key) {
     const dom = this.getDom(key);
-    let top = undefined;
     if (dom) {
       const { ul, } = this;
-      return dom.offsetTop - ul.scrollTop;
+      const height = this.getHeight(key, ul);
+      return dom.offsetTop - height;
     }
   }
 
@@ -212,7 +213,7 @@ class RegionListOffline extends OfflinePackage {
         const k = status.first;
         if (k >= 0) {
           const bottom = this.getDomDownBottom(this.getKey(k));
-          if (bottom < -4) {
+          if (bottom < status.top - 4) {
             const dom = this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
