@@ -22,23 +22,30 @@ class Node extends RegionListOffline {
   }
 
   async ownDidMount() {
-    const { id, } = this;
-    const ul = document.getElementById(id);
-    this.ul = ul;
+    const { first, } = this;
+    if (first) {
+      const { id, } = this;
+      const ul = document.getElementById(id);
+      this.ul = ul;
 
-    const scrollTop = ul.scrollTop;
-    const height = ul.clientHeight;
-    const status = {
-      first: 0,
-      top: scrollTop,
-      bottom: scrollTop + height,
-      scrollTop: ul.scrollTop,
-    };
-    this.status = status;
+      const scrollTop = ul.scrollTop;
+      const height = ul.clientHeight;
+      const status = {
+        first: 0,
+        top: scrollTop,
+        bottom: scrollTop + height,
+        scrollTop: ul.scrollTop,
+      };
+      this.status = status;
 
-    const { data, } = this.props
-    this.setData(data);
-    await this.init();
+      const { data, } = this.props
+      this.setData(data);
+      await this.init();
+    } else {
+      const { ul, innerHTML, } = this;
+      ul.innerHTML = innerHTML;
+      ul.scrollIntoView(this.state.scrollTop);
+    }
   }
 
   async syncInsert(i, t) {
