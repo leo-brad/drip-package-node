@@ -163,6 +163,7 @@ class Node extends RegionListOffline {
   }
 
   ownWillUnmount() {
+    const { first, } = this;
     if (!first) {
       const { ul, } = this;
       if (ul) {
