@@ -14,7 +14,6 @@ class OfflinePackage extends React.Component {
   }
 
   dealMountAndUnmount(data) {
-    console.log(data);
     const [event] = data;
     switch (event) {
       case 'mount':

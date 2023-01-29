@@ -10,17 +10,13 @@ class RegionListOffline extends OfflinePackage {
     const id = new Date().getTime().toString();
     this.id = id;
 
+    this.type = 1;
     this.doms = [];
     this.heights = [];
     this.dealScroll = this.dealScroll.bind(this);
   }
 
   async dealScroll(e) {
-    await new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve();
-      }, 1000 / 29);
-    });
     const {
       status: {
         scrollTop,
@@ -29,6 +25,7 @@ class RegionListOffline extends OfflinePackage {
       ul,
     } = this;
     if (ul.scrollTop > scrollTop) {
+      this.type = 1;
       await this.updateView('d');
       if (this.status.first >= 0) {
         await this.syncRemove('d');
@@ -39,12 +36,26 @@ class RegionListOffline extends OfflinePackage {
           last,
         }
       } = this;
+      this.type = 0;
       await this.updateView('u');
       if (last < this.data.length) {
         await this.syncRemove('u');
       }
     }
-    this.status.scrollDiff = this.status.scrollTop - ul.scrollTop;
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000 / 29);
+    });
+    let diffScroll = this.status.scrollTop - ul.scrollTop;
+    while (true) {
+      if (Math.abs(diffScroll) <= 45) {
+        ul.scrollIntoView(this.status.scrollTop + diffScroll);
+        break;
+      } else {
+        diffScroll = diffScroll / 2;
+      }
+    }
     this.status.scrollTop = ul.scrollTop;
   }
 
@@ -104,7 +115,8 @@ class RegionListOffline extends OfflinePackage {
     const dom = this.getDom(key);
     let top = undefined;
     if (dom) {
-      return dom.offsetTop;
+      const { ul, } = this;
+      return dom.offsetTop - ul.scrollTop;
     }
   }
 
@@ -113,7 +125,7 @@ class RegionListOffline extends OfflinePackage {
     const dom = this.getDom(key);
     const { ul, } = this;
     const height = this.getHeight(key, ul);
-    return top + height - this.status.scrollTop;
+    return top + height;
   }
 
   getDomDownBottom(key) {
@@ -186,7 +198,7 @@ class RegionListOffline extends OfflinePackage {
         if (k < this.data.length) {
           const top = this.getDomUpTop(this.getKey(k));
           const { id, ul, } = this;
-          if (top - this.status.scrollTop >= this.getHeight(id, ul)) {
+          if (top >= this.getHeight(id, ul)) {
             const dom = this.getDom(this.getKey(k));
             dom.remove();
             this.doms[this.getKey(k)] = undefined;
