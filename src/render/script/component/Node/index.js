@@ -166,6 +166,7 @@ class Node extends RegionListOffline {
     const { ul, } = this;
     if (ul) {
       this.innerHTML = ul.innerHTML;
+      u.innerHTML = '';
     }
   }
 
