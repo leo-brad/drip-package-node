@@ -43,8 +43,10 @@ class Node extends RegionListOffline {
       await this.init();
     } else {
       const { ul, innerHTML, } = this;
-      ul.innerHTML = innerHTML;
-      ul.scrollIntoView(this.state.scrollTop);
+      if (innerHTML) {
+        ul.innerHTML = innerHTML;
+        ul.scrollIntoView(this.state.scrollTop);
+      }
     }
   }
 
@@ -162,7 +164,9 @@ class Node extends RegionListOffline {
 
   ownWillUnmount() {
     const { ul, } = this;
-    this.innerHTML = ul.innerHTML;
+    if (ul) {
+      this.innerHTML = ul.innerHTML;
+    }
   }
 
   render() {
