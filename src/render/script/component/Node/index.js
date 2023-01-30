@@ -8,11 +8,8 @@ import check from '~/render/script/lib/check';
 
 class Node extends RegionListOffline {
   constructor(props) {
-    console.log(props);
     super(props);
     const { data, instance, } = this.props;
-    const id = new Date().getTime().toString() + instance;
-    this.id = id;
 
     this.state = {
       data,
@@ -31,9 +28,10 @@ class Node extends RegionListOffline {
     const ul = document.getElementById(id);
     this.ul = ul;
 
+    this.hasDom = true;
+
     const { first, } = this;
     if (first) {
-
       const scrollTop = ul.scrollTop;
       const height = ul.clientHeight;
       const status = {
@@ -54,7 +52,6 @@ class Node extends RegionListOffline {
         ul.scrollIntoView(this.state.scrollTop);
       }
     }
-    this.hasDom = true;
     const { dirty, } = this;
     if (dirty) {
       await this.init();
@@ -129,18 +126,19 @@ class Node extends RegionListOffline {
   }
 
   async init() {
-    const { first, hasDom, } = this;
+    const { first, } = this;
     if (first) {
+      const { hasDom, } = this;
       if (hasDom) {
         await this.initLast();
         this.bindEvent();
+        await this.updateView('d');
+        await this.updateView('u');
         this.first = false;
       } else {
         this.dirty = true;
       }
     }
-    await this.updateView('d');
-    await this.updateView('u');
   }
 
   bind() {
@@ -189,6 +187,7 @@ class Node extends RegionListOffline {
   }
 
   ownWillUnmount() {
+    this.hasDom = false;
     const { first, } = this;
     if (!first) {
       const { ul, } = this;
@@ -196,7 +195,6 @@ class Node extends RegionListOffline {
         this.innerHTML = ul.innerHTML;
       }
     }
-    this.hasDom = false;
   }
 
   render() {

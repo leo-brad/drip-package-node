@@ -2,7 +2,6 @@ import React from 'react';
 
 class OfflinePackage extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     const {
       instance,
@@ -14,19 +13,7 @@ class OfflinePackage extends React.Component {
     emitter.on(instance, this.dealMountAndUnmount);
   }
 
-  dealMountAndUnmount(data) {
-    const [event] = data;
-    switch (event) {
-      case 'mount':
-        this.mount();
-        break;
-      case 'unmount':
-        this.unmount();
-        break;
-    }
-  }
-
- async mount() {
+  async componentDidMount() {
     const {
       share: {
         emitter,
@@ -39,6 +26,15 @@ class OfflinePackage extends React.Component {
     this.bind();
     emitter.on('window/focus', this.bind);
     emitter.on('window/blur', this.remove);
+  }
+
+  dealMountAndUnmount(data) {
+    const [event] = data;
+    switch (event) {
+      case 'unmount':
+        this.unmount();
+        break;
+    }
   }
 
   async unmount() {

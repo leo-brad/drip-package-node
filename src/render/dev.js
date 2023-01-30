@@ -30,5 +30,4 @@ setTimeout(() => {
   emitter.send(instance, ['window/focus']);
   data.push({ field: 'stdout', string: 'Library', });
   emitter.send(instance, ['content/update']);
-  emitter.send(instance, ['mount']);
 }, 0);
