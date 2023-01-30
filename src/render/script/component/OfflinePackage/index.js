@@ -2,6 +2,7 @@ import React from 'react';
 
 class OfflinePackage extends React.Component {
   constructor(props) {
+    console.log(props);
     super(props);
     const {
       instance,

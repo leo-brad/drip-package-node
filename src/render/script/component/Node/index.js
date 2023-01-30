@@ -8,11 +8,16 @@ import check from '~/render/script/lib/check';
 
 class Node extends RegionListOffline {
   constructor(props) {
+    console.log(props);
     super(props);
     const { data, instance, } = this.props;
+    const id = new Date().getTime().toString() + instance;
+    this.id = id;
+
     this.state = {
       data,
     };
+    this.hasDom = false;
     this.first = true;
     this.hasData = false;
     this.roots = {};
@@ -22,11 +27,12 @@ class Node extends RegionListOffline {
   }
 
   async ownDidMount() {
+    const { id, } = this;
+    const ul = document.getElementById(id);
+    this.ul = ul;
+
     const { first, } = this;
     if (first) {
-      const { id, } = this;
-      const ul = document.getElementById(id);
-      this.ul = ul;
 
       const scrollTop = ul.scrollTop;
       const height = ul.clientHeight;
@@ -47,6 +53,12 @@ class Node extends RegionListOffline {
         ul.innerHTML = innerHTML;
         ul.scrollIntoView(this.state.scrollTop);
       }
+    }
+    this.hasDom = true;
+    const { dirty, } = this;
+    if (dirty) {
+      await this.init();
+      this.dirty = false;
     }
   }
 
@@ -94,7 +106,12 @@ class Node extends RegionListOffline {
   async updateUi() {
     const { data, } = this.props;
     this.setData(data);
-    await this.init();
+    const { hasDom, } = this;
+    if (!hasDom) {
+      this.dirty = true;
+    } else {
+      await this.init();
+    }
   }
 
   setData(data) {
@@ -105,16 +122,25 @@ class Node extends RegionListOffline {
         this.hasData = true;
       }
     }
+    const { hasDom, } = this;
+    if (!hasDom) {
+      this.dirty = true;
+    }
   }
 
   async init() {
-    await this.initLast();
-    await this.updateView('d');
-    const { first, } = this;
+    const { first, hasDom, } = this;
     if (first) {
-      this.first = false;
-      this.bindEvent();
+      if (hasDom) {
+        await this.initLast();
+        this.bindEvent();
+        this.first = false;
+      } else {
+        this.dirty = true;
+      }
     }
+    await this.updateView('d');
+    await this.updateView('u');
   }
 
   bind() {
@@ -168,9 +194,9 @@ class Node extends RegionListOffline {
       const { ul, } = this;
       if (ul) {
         this.innerHTML = ul.innerHTML;
-        ul.innerHTML = '';
       }
     }
+    this.hasDom = false;
   }
 
   render() {
