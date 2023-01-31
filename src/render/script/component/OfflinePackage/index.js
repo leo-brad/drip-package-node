@@ -11,6 +11,8 @@ class OfflinePackage extends React.Component {
     } = this.props;
     this.dealMountAndUnmount = this.dealMountAndUnmount.bind(this);
     emitter.on(instance, this.dealMountAndUnmount);
+    this.bind = this.bind.bind(this);
+    this.remove = this.remove.bind(this);
   }
 
   async componentDidMount() {
