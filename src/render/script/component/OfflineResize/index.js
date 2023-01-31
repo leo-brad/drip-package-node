@@ -1,18 +1,9 @@
 import React from 'react';
 
-class Offline extends React.Component {
+class OfflineResize extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      instance,
-      share: {
-        emitter,
-      },
-    } = this.props;
-    this.dealMountAndUnmount = this.dealMountAndUnmount.bind(this);
-    emitter.on(instance, this.dealMountAndUnmount);
-    this.bind = this.bind.bind(this);
-    this.remove = this.remove.bind(this);
+    this.resize = this.resize.bind(this);
   }
 
   async componentDidMount() {
@@ -20,6 +11,7 @@ class Offline extends React.Component {
       share: {
         emitter,
       },
+      instance,
     } = this.props;
     const { ownDidMount, } = this;
     if (typeof ownDidMount === 'function') {
@@ -28,6 +20,7 @@ class Offline extends React.Component {
     this.bind();
     emitter.on('window/focus', this.bind);
     emitter.on('window/blur', this.remove);
+    emitter.on('window/resize', this.resize);
   }
 
   dealMountAndUnmount(data) {
@@ -52,7 +45,8 @@ class Offline extends React.Component {
     this.remove();
     emitter.remove('window/focus', this.bind);
     emitter.remove('window/blur', this.remove);
+    emitter.remove('window/resize', this.resize);
   }
 }
 
-export default Offline;
+export default OfflineResize;
