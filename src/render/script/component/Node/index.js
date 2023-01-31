@@ -26,36 +26,37 @@ class Node extends RegionListOffline {
   async ownDidMount() {
     const { id, } = this;
     const ul = document.getElementById(id);
-    this.ul = ul;
+    if (ul) {
+      this.ul = ul;
+      this.hasDom = true;
+      const { first, } = this;
+      if (first) {
+        const { ul, } = this;
+        const scrollTop = ul.scrollTop;
+        const height = ul.clientHeight;
+        const status = {
+          first: 0,
+          top: scrollTop,
+          bottom: scrollTop + height,
+          scrollTop,
+        };
+        this.status = status;
 
-    this.hasDom = true;
-
-    const { first, } = this;
-    if (first) {
-      const scrollTop = ul.scrollTop;
-      const height = ul.clientHeight;
-      const status = {
-        first: 0,
-        top: scrollTop,
-        bottom: scrollTop + height,
-        scrollTop: ul.scrollTop,
-      };
-      this.status = status;
-
-      const { data, } = this.props
-      this.setData(data);
-      await this.init();
-    } else {
-      const { ul, innerHTML, } = this;
-      if (innerHTML) {
-        ul.innerHTML = innerHTML;
-        ul.scrollIntoView(this.state.scrollTop);
+        const { data, } = this.props
+        this.setData(data);
+        await this.init();
+      } else {
+        const { ul, innerHTML, } = this;
+        if (innerHTML) {
+          ul.innerHTML = innerHTML;
+          ul.scrollIntoView(this.status.scrollTop);
+        }
       }
-    }
-    const { dirty, } = this;
-    if (dirty) {
-      await this.init();
-      this.dirty = false;
+      const { dirty, } = this;
+      if (dirty) {
+        await this.init();
+        this.dirty = false;
+      }
     }
   }
 

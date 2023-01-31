@@ -1,6 +1,6 @@
 import React from 'react';
 
-class OfflinePackage extends React.Component {
+class Offline extends React.Component {
   constructor(props) {
     super(props);
     const {
