@@ -60,6 +60,41 @@ class Node extends RegionListOffline {
     }
   }
 
+  async resize() {
+    let dh = 0;
+    if (this.h) {
+      this.h = window.clientHeight;
+    } else {
+      const { h, } = this;
+      dh = window.clientHeight - h;
+    }
+    if (Math.abs(dh) > 0) {
+      const { flag, } = this;
+      if (flag) {
+        this.flag = false;
+        setTimeout(async () => {
+          this.flag = true;
+        }, 100);
+        await this.resizeComponent();
+      } else {
+        this.dirty = true;
+        setTimeout(async () => {
+          const { dirty, } = this;
+          if (dirty) {
+            await this.resizeComponent();
+            this.dirty = false;
+          }
+        }, 250);
+      }
+    }
+  }
+
+  async resizeComponent() {
+    const { ul, } = this;
+    await this.ownWillUnmount();
+    await this.ownDidMount();
+  }
+
   async syncInsert(i, t) {
     const e = this.data[i];
     if (e) {

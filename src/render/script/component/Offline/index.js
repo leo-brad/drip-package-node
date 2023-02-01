@@ -13,6 +13,16 @@ class Offline extends React.Component {
     emitter.on(instance, this.dealMountAndUnmount);
     this.bind = this.bind.bind(this);
     this.remove = this.remove.bind(this);
+    this.focus = this.focus.bind(this);
+  }
+
+  focus() {
+    const {
+      focus,
+    } = global;
+    if (!focus) {
+      this.bind();
+    }
   }
 
   async componentDidMount() {
@@ -26,7 +36,7 @@ class Offline extends React.Component {
       await this.ownDidMount();
     }
     this.bind();
-    emitter.on('window/focus', this.bind);
+    emitter.on('window/focus', this.focus);
     emitter.on('window/blur', this.remove);
   }
 
@@ -50,7 +60,7 @@ class Offline extends React.Component {
       await this.ownWillUnmount();
     }
     this.remove();
-    emitter.remove('window/focus', this.bind);
+    emitter.remove('window/focus', this.focus);
     emitter.remove('window/blur', this.remove);
   }
 }

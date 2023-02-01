@@ -1,8 +1,8 @@
 import React from 'react';
-import OfflinePackage from '~/render/script/component/OfflinePackage';
+import OfflineResize from '~/render/script/component/OfflineResize';
 import renderToNode from '~/render/script/lib/renderToNode';
 
-class RegionListOffline extends OfflinePackage {
+class RegionListOffline extends OfflineResize {
   constructor(props) {
     super(props);
     this.data = [];

@@ -18,7 +18,7 @@ class OfflineResize extends React.Component {
       await this.ownDidMount();
     }
     this.bind();
-    emitter.on('window/focus', this.bind);
+    emitter.on('window/focus', this.focus);
     emitter.on('window/blur', this.remove);
     emitter.on('window/resize', this.resize);
   }
@@ -43,7 +43,7 @@ class OfflineResize extends React.Component {
       await this.ownWillUnmount();
     }
     this.remove();
-    emitter.remove('window/focus', this.bind);
+    emitter.remove('window/focus', this.focus);
     emitter.remove('window/blur', this.remove);
     emitter.remove('window/resize', this.resize);
   }
