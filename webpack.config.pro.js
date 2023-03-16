@@ -8,12 +8,6 @@ module.exports = {
     filename: 'render.bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      minify: true,
-      template: './src/render/html/index.html',
-    }),
-  ],
   module: {
     rules: [
       {
