@@ -1,0 +1,21 @@
+.title
+  color: rgb(200, 75, 75)
+  font-size: 25px
+  margin: 25px 20px 12px 24px
+.title:before
+  font-size: 31px
+  color: rgb(0, 0, 0)
+  margin: 0 18px 0 1px
+  content: '\f1c9'
+.description
+  color: rgb(75, 75, 75)
+  font-size: 19px
+  margin: 15px 25px 15px 25px
+.code
+  font-size: 18px
+  display: flex
+  width: 89.5%
+  padding: 14px
+  border: 2px solid rgb(215, 215, 215)
+  margin: 22px 25px 25px 24px
+  border-radius: 1.5px

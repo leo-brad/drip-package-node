@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   entry: {
     render: './src/render/dev.js',
-    readme: './src/readme/index.js',
+    readme: './src/readme/dev.js',
   },
   output: {
     filename: '[name].bundle.js',
@@ -36,6 +36,25 @@ module.exports = {
         }
       },
       {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'postcss-loader',
+          },
+        ]
+      },
+    ],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        }
+      },
+      {
         test: /\.css$/i,
         use: [
           'style-loader',
@@ -51,7 +70,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(png|jpe?g|gif|svg|ttf|woff|otf)$/,
+        test: /\.(png|jpe?g|gif|svg)$/,
         use: [
           {
             loader: 'file-loader',
