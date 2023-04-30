@@ -1,22 +1,22 @@
 .title
   color: rgb(200, 75, 75)
-  font-size: 23px
-  margin: 25px 20px 0px 35px
+  font-size: 20.5px
+  margin: 25px 50px 0px 50px
 .title:before
-  font-size: 29px
+  font-size: 26px
   color: rgb(0, 0, 0)
   margin: 0 14px 0 1px
   content: '\f1c9'
 .description
   color: rgb(75, 75, 75)
-  font-size: 18px
+  font-size: 17px
   line-height: 1.2
-  margin: 24.5px 35px 24.5px 35px
+  margin: 20px 50px 20px 50px
 .code
-  font-size: 16px
+  font-size: 15px
   display: flex
-  width: calc(100% -89px)
+  width: calc(100% - 114px)
   padding: 13px 10px 13px 10px
-  background-color: rgb(238, 238, 238)
-  margin: 30px 35px 30px 35px
+  background-color: rgb(240, 240, 240)
+  margin: 28px 50px 25px 50px
   border-radius: 1.5px
