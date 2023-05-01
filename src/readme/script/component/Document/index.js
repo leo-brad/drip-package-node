@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.css';
-import formateJavascript from '~/readme/script/lib/formateJavascript';
+import Code from '~/readme/script/component/Code';
 
 class Document extends React.Component {
   render() {
@@ -16,9 +16,9 @@ class Document extends React.Component {
           You can write node script execute your own task.For example,unit test
           task.
         </div>
-        <code className={style.code}>
-          {formateJavascript("child_process.execSync('jest ./test', { stdio: 'inherit', });")}
-        </code>
+        <Code>
+          {"child_process.execSync('jest ./test', { stdio: 'inherit', });"}
+        </Code>
       </div>
     );
   }
